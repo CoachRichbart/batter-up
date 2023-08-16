@@ -1,9 +1,7 @@
 window.onload = function() {
     const queryString = window.location.search;
-    console.log(queryString);
     const urlParams = new URLSearchParams(queryString);
     const team = urlParams.get('team')
-    console.log(team);
 
     document.getElementsByClassName("pagetitle")[0].innerHTML = team;
   };
@@ -19,10 +17,8 @@ function updateLineups(){
     var allTheDiffs;
 
     const queryString = window.location.search;
-    console.log(queryString);
     const urlParams = new URLSearchParams(queryString);
     const team = urlParams.get('team')
-    console.log(team);
 
     // document.getElementsByClassName("pagetitle")[0].innerHTML = team;
 
@@ -175,7 +171,8 @@ function getThreeBattersAhead(fdLineup, actualLineup, batter){
 
     var threeAheadDiffs = [];
 
-    let fdPosition = fdLineup.indexOf(batter);
+    // let fdPosition = fdLineup.indexOf(batter);
+    let fdPosition = findBatterInLineup(fdLineup, batter);
     if(fdPosition < 0){
         //silly way of identifying player not in FD lineup.
         threeAheadDiffs = ['','','',''];
@@ -264,3 +261,35 @@ function batterAhead(batterPosition){
 //     document.getElementById(cityName).style.display = "block";
 //     evt.currentTarget.className += " active";
 //   }
+
+function findBatterInLineup(lineup, batter){
+    let lowercaseLineup = lineup.map((x) => x.toLowerCase());
+    let lowercaseBatter = batter.toLowerCase();
+
+    //Matched exactly
+    let exact = lowercaseLineup.indexOf(lowercaseBatter);
+    if(exact >= 0){
+        return exact;
+    }
+
+    //Matched assuming last name is after first space
+    let lastName = lowercaseLineup.map(lastNameOnly);
+    let fuzzy = lastName.indexOf(lastNameOnly(lowercaseBatter));
+
+    if(fuzzy >= 0){
+        return fuzzy;
+    }
+
+    //Matched assuming whole thing is last name
+    return lowercaseLineup.indexOf(lastNameOnly(lowercaseBatter));
+
+}
+
+function lastNameOnly(name){
+
+    if(name == ''){return name;}
+    let y = name.split(' ');
+    y.shift();
+    return y.join(' ');
+
+}

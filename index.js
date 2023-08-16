@@ -41,24 +41,24 @@ function updateLineups(){
     obj.dates[0].games.forEach(game => {
 
         if(game.teams.away.team.name == team){
-            console.log('*********' + game.teams.away.team.name);
+            // console.log('*********' + game.teams.away.team.name);
 
             game.lineups.awayPlayers.forEach(player => {
-                console.log(player.fullName);
+                // console.log(player.fullName);
                 actualLineup.push(player.fullName);
             })
         } else if(game.teams.home.team.name == team){
 
-            console.log('*********' + game.teams.home.team.name);
+            // console.log('*********' + game.teams.home.team.name);
             game.lineups.homePlayers.forEach(player => {
-                console.log(player.fullName);
+                // console.log(player.fullName);
                 actualLineup.push(player.fullName);
             })
         }
         console.log(actualLineup);
     var battingNumber = 1;
     actualLineup.forEach(actualBatter => {
-        console.log(battingNumber);
+        // console.log(battingNumber);
         document.getElementById(battingNumber + "a").value = actualBatter;
         battingNumber += 1;
     })
@@ -112,8 +112,6 @@ function evaluateLineupDiffs() {
 
         allTheDiffs.push(getThreeBattersAhead(fdLineup, actualLineup, batter));
 
-        console.log('All the diffs');
-        console.log(allTheDiffs);
 
         // var fdThreeAhead = this.getThreeBattersAhead(fdLineup, fdBatter);
         // console.log('FANDUEL');
@@ -140,8 +138,6 @@ function evaluateLineupDiffs() {
 
     });
 
-    console.log('a;lksdjf;alksdjf;laksdjkfklds');
-    console.log(allTheDiffs);
    return allTheDiffs;
 
 
@@ -149,16 +145,14 @@ function evaluateLineupDiffs() {
 
 function updateTheColors(allTheDiffs){
 
-    console.log('a;lksdjf;alksdjf;laksdjkfklds');
-    console.log(allTheDiffs);
 
     var battingPosition = 1;
     allTheDiffs.forEach(batterDiffs => {
         let numberOfDiffs = batterDiffs.length;
-        console.log('***********');
-        console.log(battingPosition);
-        console.log(numberOfDiffs);
-        console.log(batterDiffs);
+        // console.log('***********');
+        // console.log(battingPosition);
+        // console.log(numberOfDiffs);
+        // console.log(batterDiffs);
 
         if(numberOfDiffs == 1){
             document.getElementById(battingPosition + "a").style.backgroundColor = 'red';
@@ -177,7 +171,10 @@ function updateTheColors(allTheDiffs){
 
 function getThreeBattersAhead(fdLineup, actualLineup, batter){
 
+    var threeAheadDiffs = [];
+
     let fdPosition = fdLineup.indexOf(batter);
+    if(fdPosition < 0){return threeAheadDiffs;}
     let fdOnePositionAhead = batterAhead(fdPosition);
     let fdTwoPositionsAhead = batterAhead(fdOnePositionAhead);
     let fdThreePositionsAhead = batterAhead(fdTwoPositionsAhead);
@@ -188,16 +185,12 @@ function getThreeBattersAhead(fdLineup, actualLineup, batter){
     let actualThreePositionsAhead = batterAhead(actualTwoPositionsAhead);
 
     var fdAllThreeAhead = [fdLineup[fdOnePositionAhead], fdLineup[fdTwoPositionsAhead], fdLineup[fdThreePositionsAhead]];
-    console.log('here');
-    console.log(fdAllThreeAhead);
     var actualAllThreeAhead = [actualLineup[actualOnePositionAhead], actualLineup[actualTwoPositionsAhead], actualLineup[actualThreePositionsAhead]];
 
-    var threeAheadDiffs = [];
+
 
     actualAllThreeAhead.forEach(actual => {
-        console.log('&&&&&&&&&&');
-        console.log(actual);
-        console.log(this.fdAllThreeAhead);
+
         if(!fdAllThreeAhead.includes(actual)){
             threeAheadDiffs.push(actual);
         }
@@ -252,16 +245,16 @@ function batterAhead(batterPosition){
 }
 
 
-function openCity(evt, cityName) {
-    var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-      tabcontent[i].style.display = "none";
-    }
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-      tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
-    document.getElementById(cityName).style.display = "block";
-    evt.currentTarget.className += " active";
-  }
+// function openCity(evt, cityName) {
+//     var i, tabcontent, tablinks;
+//     tabcontent = document.getElementsByClassName("tabcontent");
+//     for (i = 0; i < tabcontent.length; i++) {
+//       tabcontent[i].style.display = "none";
+//     }
+//     tablinks = document.getElementsByClassName("tablinks");
+//     for (i = 0; i < tablinks.length; i++) {
+//       tablinks[i].className = tablinks[i].className.replace(" active", "");
+//     }
+//     document.getElementById(cityName).style.display = "block";
+//     evt.currentTarget.className += " active";
+//   }

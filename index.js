@@ -155,11 +155,13 @@ function updateTheColors(allTheDiffs){
         // console.log(batterDiffs);
 
         if(numberOfDiffs == 1){
-            document.getElementById(battingPosition + "a").style.backgroundColor = 'red';
+            document.getElementById(battingPosition + "a").style.backgroundColor = 'orange';
         } else if(numberOfDiffs == 2){
             document.getElementById(battingPosition + "a").style.backgroundColor = 'blue';
         } else if(numberOfDiffs == 3){
             document.getElementById(battingPosition + "a").style.backgroundColor = 'green';
+        } else if(numberOfDiffs == 4){
+            document.getElementById(battingPosition + "a").style.backgroundColor = 'red';
         } else if(numberOfDiffs == 0){
             document.getElementById(battingPosition + "a").style.backgroundColor = '';
         }
@@ -174,7 +176,11 @@ function getThreeBattersAhead(fdLineup, actualLineup, batter){
     var threeAheadDiffs = [];
 
     let fdPosition = fdLineup.indexOf(batter);
-    if(fdPosition < 0){return threeAheadDiffs;}
+    if(fdPosition < 0){
+        //silly way of identifying player not in FD lineup.
+        threeAheadDiffs = ['','','',''];
+        return threeAheadDiffs;
+    }
     let fdOnePositionAhead = batterAhead(fdPosition);
     let fdTwoPositionsAhead = batterAhead(fdOnePositionAhead);
     let fdThreePositionsAhead = batterAhead(fdTwoPositionsAhead);

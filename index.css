@@ -46,3 +46,8 @@
   border: 1px solid #ccc;
   border-top: none;
 }
+
+.big-btn {
+    width: 100px;
+    height: 40px;
+}

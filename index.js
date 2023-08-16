@@ -235,3 +235,4 @@ function batterAhead(batterPosition){
         return 8;
     }
 }
+//test

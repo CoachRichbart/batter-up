@@ -1,43 +1,53 @@
+window.onload = function() {
+    const queryString = window.location.search;
+    console.log(queryString);
+    const urlParams = new URLSearchParams(queryString);
+    const team = urlParams.get('team')
+    console.log(team);
+
+    document.getElementsByClassName("pagetitle")[0].innerHTML = team;
+  };
+
+
+
+
+
 function updateLineups(){
     var obj;
     var games;
     var actualLineup = [];
+    var allTheDiffs;
 
-    var input = document.getElementById("teamName").value;
-    // console.log(input);
+    const queryString = window.location.search;
+    console.log(queryString);
+    const urlParams = new URLSearchParams(queryString);
+    const team = urlParams.get('team')
+    console.log(team);
+
+    // document.getElementsByClassName("pagetitle")[0].innerHTML = team;
+
 
     fetch('https://statsapi.mlb.com/api/v1/schedule?sportId=1&language=en&hydrate=lineups', {
 
-    //     headers: {
-    //         'Accept': 'application/json'
-    //     }
     })
 
     .then(res => res.json())
   .then(data => {
     obj = data;
-    // games = data.dates[0].games;
-    // data.dates[0].games.forEach(element => {
-    //     console.log(element.teams.away.team.name);
-    //     console
-    // });
+
    })
   .then(() => {
     console.log(obj);
     obj.dates[0].games.forEach(game => {
-        // console.log(game.teams.away.team.name);
-        // console.log(game.teams.home.team.name);
-        // console.log(game.teams.away.team.name == input);
 
-        // var actualLineup = [];
-        if(game.teams.away.team.name == input){
+        if(game.teams.away.team.name == team){
             console.log('*********' + game.teams.away.team.name);
 
             game.lineups.awayPlayers.forEach(player => {
                 console.log(player.fullName);
                 actualLineup.push(player.fullName);
             })
-        } else if(game.teams.home.team.name == input){
+        } else if(game.teams.home.team.name == team){
 
             console.log('*********' + game.teams.home.team.name);
             game.lineups.homePlayers.forEach(player => {
@@ -50,22 +60,17 @@ function updateLineups(){
     actualLineup.forEach(actualBatter => {
         console.log(battingNumber);
         document.getElementById(battingNumber + "a").value = actualBatter;
-        // document.getElementById("1a").value = actualBatter;
         battingNumber += 1;
     })
     });
-    // console.log(obj.dates[0].games[0].teams.away.team.name);
-   });
-    // // .then(response => response.text())
-    // .then(response => response.json())
-    // // .then(text => console.log(text))
-    // // .then(text => console.log(JSON.parse(text)))
+   })
+   .then(() => {this.allTheDiffs = this.evaluateLineupDiffs();})
+   .then(() => {this.updateTheColors(this.allTheDiffs);})
+   ;
 
 
-    // this.obj.dates[0].games.forEach(element => {
-    //     console.log(element.teams.away.team.name);
-    // });
-//    var fdLineup = this.evaluateLineupDiffs();
+//    var allTheDiffs = this.evaluateLineupDiffs();
+//    this.updateTheColors(allTheDiffs);
 
 }
 
@@ -135,6 +140,18 @@ function evaluateLineupDiffs() {
 
     });
 
+    console.log('a;lksdjf;alksdjf;laksdjkfklds');
+    console.log(allTheDiffs);
+   return allTheDiffs;
+
+
+}
+
+function updateTheColors(allTheDiffs){
+
+    console.log('a;lksdjf;alksdjf;laksdjkfklds');
+    console.log(allTheDiffs);
+
     var battingPosition = 1;
     allTheDiffs.forEach(batterDiffs => {
         let numberOfDiffs = batterDiffs.length;
@@ -146,18 +163,16 @@ function evaluateLineupDiffs() {
         if(numberOfDiffs == 1){
             document.getElementById(battingPosition + "a").style.backgroundColor = 'red';
         } else if(numberOfDiffs == 2){
-            document.getElementById(battingPosition + "a").style.backgroundColor = 'yellow';
+            document.getElementById(battingPosition + "a").style.backgroundColor = 'blue';
         } else if(numberOfDiffs == 3){
             document.getElementById(battingPosition + "a").style.backgroundColor = 'green';
         } else if(numberOfDiffs == 0){
-            document.getElementById(battingPosition + "a").style.backgroundColor = 'purple';
+            document.getElementById(battingPosition + "a").style.backgroundColor = '';
         }
 
         battingPosition += 1;
 
     });
-
-
 }
 
 function getThreeBattersAhead(fdLineup, actualLineup, batter){
@@ -235,4 +250,18 @@ function batterAhead(batterPosition){
         return 8;
     }
 }
-//test
+
+
+function openCity(evt, cityName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(cityName).style.display = "block";
+    evt.currentTarget.className += " active";
+  }

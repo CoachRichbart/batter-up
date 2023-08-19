@@ -1,9 +1,7 @@
 window.onload = function() {
     const queryString = window.location.search;
-    console.log(queryString);
     const urlParams = new URLSearchParams(queryString);
     const team = urlParams.get('team')
-    console.log(team);
 
     document.getElementsByClassName("pagetitle")[0].innerHTML = team;
   };
@@ -18,11 +16,11 @@ function updateLineups(){
     var actualLineup = [];
     var allTheDiffs;
 
+    var todaysGames = [];
+
     const queryString = window.location.search;
-    console.log(queryString);
     const urlParams = new URLSearchParams(queryString);
     const team = urlParams.get('team')
-    console.log(team);
 
     // document.getElementsByClassName("pagetitle")[0].innerHTML = team;
 
@@ -34,11 +32,15 @@ function updateLineups(){
     .then(res => res.json())
   .then(data => {
     obj = data;
+    console.log(data);
 
    })
   .then(() => {
     console.log(obj);
     obj.dates[0].games.forEach(game => {
+
+        var x = [game.teams.home.team.name, game.teams.away.team.name];
+        todaysGames.push(x);
 
         if(game.teams.away.team.name == team){
             // console.log('*********' + game.teams.away.team.name);
@@ -64,7 +66,13 @@ function updateLineups(){
     })
     });
    })
-   .then(() => {this.allTheDiffs = this.evaluateLineupDiffs();})
+   .then(() => {this.allTheDiffs = this.evaluateLineupDiffs();
+        console.log(todaysGames);
+        // todaysGames.forEach(element => {
+        //     document.body.innerHTML += '<div class="item">' + element + '</div>'
+        // });
+
+    })
    .then(() => {this.updateTheColors(this.allTheDiffs);})
    ;
 
@@ -175,7 +183,8 @@ function getThreeBattersAhead(fdLineup, actualLineup, batter){
 
     var threeAheadDiffs = [];
 
-    let fdPosition = fdLineup.indexOf(batter);
+    // let fdPosition = fdLineup.indexOf(batter);
+    let fdPosition = findBatterInLineup(fdLineup, batter);
     if(fdPosition < 0){
         //silly way of identifying player not in FD lineup.
         threeAheadDiffs = ['','','',''];
@@ -251,16 +260,49 @@ function batterAhead(batterPosition){
 }
 
 
-// function openCity(evt, cityName) {
-//     var i, tabcontent, tablinks;
-//     tabcontent = document.getElementsByClassName("tabcontent");
-//     for (i = 0; i < tabcontent.length; i++) {
-//       tabcontent[i].style.display = "none";
-//     }
-//     tablinks = document.getElementsByClassName("tablinks");
-//     for (i = 0; i < tablinks.length; i++) {
-//       tablinks[i].className = tablinks[i].className.replace(" active", "");
-//     }
-//     document.getElementById(cityName).style.display = "block";
-//     evt.currentTarget.className += " active";
-//   }
+function findBatterInLineup(lineup, batter){
+    let lowercaseLineup = lineup.map((x) => x.toLowerCase());
+    let lowercaseBatter = batter.toLowerCase();
+
+    //Matched exactly
+    let exact = lowercaseLineup.indexOf(lowercaseBatter);
+    if(exact >= 0){
+        return exact;
+    }
+
+    //Matched assuming last name is after first space
+    let lastName = lowercaseLineup.map(lastNameOnly);
+    let fuzzy = lastName.indexOf(lastNameOnly(lowercaseBatter));
+
+    if(fuzzy >= 0){
+        return fuzzy;
+    }
+
+    //Matched assuming whole thing is last name
+    return lowercaseLineup.indexOf(lastNameOnly(lowercaseBatter));
+
+}
+
+function lastNameOnly(name){
+
+    if(name == ''){return name;}
+    let y = name.split(' ');
+    y.shift();
+    return y.join(' ');
+
+}
+
+
+function openCity(evt, cityName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+          tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+          tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(cityName).style.display = "block";
+        evt.currentTarget.className += " active";
+      }

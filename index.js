@@ -185,6 +185,8 @@ function getThreeBattersAhead(fdLineup, actualLineup, batter){
 
     // let fdPosition = fdLineup.indexOf(batter);
     let fdPosition = findBatterInLineup(fdLineup, batter);
+    // let fdPosition = fdLineup.indexOf(batter);
+    let fdPosition = findBatterInLineup(fdLineup, batter);
     if(fdPosition < 0){
         //silly way of identifying player not in FD lineup.
         threeAheadDiffs = ['','','',''];

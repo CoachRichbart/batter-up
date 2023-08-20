@@ -181,7 +181,8 @@ window.onload = function() {
                 }
                 //console.log(teamName);
                 const teamContainer = document.createElement("div");
-                teamContainer.className = "team-container";
+                teamContainer.className = "team-container"
+                teamContainer.id = teamName.replace(/\s+/g, '').replace('.','')+ gameNum;
                 teamContainer.innerHTML = `
                     <h2 class="teamName">${teamName}</h2>
                     <div class="lineup-container">
@@ -496,6 +497,9 @@ function updateTheColors(allTheDiffs, teamsContainer, teamName, actualList){
 
 function getThreeBattersAhead(fdLineup, actualLineup, batter){
 
+    // console.log('_____________________________________________');
+    // console.log(batter);
+
     //console.log('in 3 ahead');
 
     var threeAheadDiffs = [];
@@ -523,8 +527,8 @@ function getThreeBattersAhead(fdLineup, actualLineup, batter){
     var actualAllThreeAhead = [actualLineup[actualOnePositionAhead], actualLineup[actualTwoPositionsAhead], actualLineup[actualThreePositionsAhead]];
 
 
-    console.log(actualAllThreeAhead);
-    console.log(fdAllThreeAhead);
+    // console.log(actualAllThreeAhead);
+    // console.log(fdAllThreeAhead);
 
     actualAllThreeAhead.forEach(actual => {
 
@@ -532,7 +536,8 @@ function getThreeBattersAhead(fdLineup, actualLineup, batter){
         //     threeAheadDiffs.push(actual);
         // }
 
-        if(findBatterInLineup(fdAllThreeAhead, actual) < 0){
+        if(findBatterInLineup(fdAllThreeAhead, actual) < 0  && findBatterInLineup(fdLineup, actual) >= 0){
+            // console.log('PUSHING .... ' + actual);
             threeAheadDiffs.push(actual);
         }
 
@@ -540,7 +545,8 @@ function getThreeBattersAhead(fdLineup, actualLineup, batter){
 
 
 
-
+    // console.log('difffffffffffffffs');
+    // console.log(threeAheadDiffs);
 
     return threeAheadDiffs;
     // for (let index = 0; index < 3; index++) {
@@ -604,6 +610,9 @@ function findBatterInLineup(lineup, batter){
     //Matched assuming whole thing is last name
     if(lastNameOnly(lowercaseBatter) != ''){
         // console.log('last name is whole thing');
+        // console.log(lowercaseBatter);
+        // console.log(lowercaseLineup);
+        // console.log(lowercaseLineup.indexOf(lastNameOnly(lowercaseBatter)));
         return lowercaseLineup.indexOf(lastNameOnly(lowercaseBatter));
     }
 
@@ -624,6 +633,8 @@ function lastNameOnly(name){
 
 function getLineups(){
     var obj;
+    var lineupsWeHave = [];
+    // var lineupsWeHave = ['Tampa Bay Rays'];
     // var games;
     // var actualLineup = [];
     // var allTheDiffs;
@@ -654,6 +665,8 @@ function getLineups(){
    })
   .then(() => {
     //console.log(obj);
+
+
     obj.dates[0].games.forEach(game => {
 
         // var x = [game.teams.home.team.name, game.teams.away.team.name];
@@ -686,6 +699,7 @@ function getLineups(){
 
         if(game.lineups.awayPlayers !== undefined){
             var awayCounter =  0;
+            lineupsWeHave.push(game.teams.away.team.name);
 
             game.lineups.awayPlayers.forEach(player => {
                 // //console.log(player.fullName);
@@ -699,8 +713,9 @@ function getLineups(){
         }
 
         if(game.lineups.homePlayers !== undefined){
-
             var homeCounter = 0;
+            lineupsWeHave.push(game.teams.home.team.name);
+
             game.lineups.homePlayers.forEach(player => {
                 // //console.log(player.fullName);
                 // homeLineup.push(player.fullName);
@@ -711,6 +726,46 @@ function getLineups(){
 
 
         })
+    })
+    .then(() => {
+        // var teamsContainer = document.getElementsByClassName("team-container");
+        // var teamName = 'Tampa Bay Rays';
+        var alreadyAdded = [];
+
+        // const guessedList = document.querySelector(`#${teamName.replace(/\s+/g, '').replace('.','')}` + gameNum);
+        // console.log(guessedList);
+        // console.log(teamsContainer);
+        // console.log(teamsContainer[0]);
+        // console.log(lineupsWeHave);
+        // teamsContainer.forEach(teamContainer => {
+        //     if(lineupsWeHave.includes(teamContainer.querySelector("h2").textContent)){
+        //         teamContainer.querySelector("h2").backgroundColor = 'blue';
+        //     }
+        // });
+
+        // for (let i = 0; i < teamsContainer.length; i++) {
+        //     if(lineupsWeHave.includes(teamsContainer[i].querySelector("h2").textContent)){
+        //         console.log('am i in here');
+        //         teamsContainer[i].style.backgroundColor = 'gray';
+        //     }
+        // }
+
+
+        lineupsWeHave.forEach(teamName => {
+
+            var gameNum = 1;
+            if(alreadyAdded.includes(teamName)){
+                gameNum = 2;
+            }
+
+            console.log(teamName);
+            console.log(`#${teamName.replace(/\s+/g, '').replace('.','')}` + gameNum);
+            console.log(document.querySelector(`#${teamName.replace(/\s+/g, '').replace('.','')}` + gameNum));
+            document.querySelector(`#${teamName.replace(/\s+/g, '').replace('.','')}` + gameNum).style.backgroundColor = 'gray';
+            alreadyAdded.push(teamName);
+        });
+
+
     })
     .then(() => {compareLineups();})
 }

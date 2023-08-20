@@ -36,7 +36,7 @@ window.onload = function() {
     .then(res => res.json())
   .then(data => {
     obj = data;
-    // console.log(data);
+    console.log(data);
 
    })
   .then(() => {
@@ -447,7 +447,7 @@ function updateTheColors(allTheDiffs, teamsContainer, teamName, actualList){
             if(numberOfDiffs == 1){
                 actualInput.style.backgroundColor = 'orange';
             } else if(numberOfDiffs == 2){
-                actualInput.style.backgroundColor = 'blue';
+                actualInput.style.backgroundColor = 'lightblue';
                 // document.getElementById(battingPosition + "a").style.backgroundColor = 'blue';
             } else if(numberOfDiffs == 3){
                 actualInput.style.backgroundColor = 'green';

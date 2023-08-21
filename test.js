@@ -36,7 +36,7 @@ window.onload = function() {
     .then(res => res.json())
   .then(data => {
     obj = data;
-    // console.log(data);
+    console.log(data);
 
    })
   .then(() => {
@@ -46,6 +46,7 @@ window.onload = function() {
         // var x = [game.teams.home.team.name, game.teams.away.team.name];
         // teamsPlaying.push(x);
         teamsPlaying.push(game.teams.away.team.name, game.teams.home.team.name);
+
 
         // if(game.gameNumber == 2){
         //     doubleHeaderTeamsPlaying.push(game.teams.away.team.name, game.teams.home.team.name);
@@ -637,6 +638,15 @@ function lastNameOnly(name){
 
 
 function getLineups(){
+
+    // const interval = setInterval(function() {
+    //     // method to be executed;
+    //     getLineups();
+    //   }, 5000);
+
+    //  clearInterval(interval);
+
+
     var obj;
     var lineupsWeHave = [];
     // var lineupsWeHave = ['Tampa Bay Rays'];
@@ -670,7 +680,8 @@ function getLineups(){
    })
   .then(() => {
     //console.log(obj);
-
+    // console.log(obj.dates[0].games);
+    // console.log(obj.dates[0].games.length);
 
     obj.dates[0].games.forEach(game => {
 
@@ -702,9 +713,22 @@ function getLineups(){
         //console.log(game.lineups === 'undefined');
         // //console.log(game.lineups.awayPlayers);
 
-        if(game.lineups.awayPlayers !== undefined){
+        // console.log(game.lineups);
+        // console.log(game.hasOwnProperty("lineups"));
+        // console.log(game.lineups.hasOwnProperty("awayPlayers"));
+        // console.log(game.teams.away.team.name);
+        // console.log(game.teams.home.team.name);
+
+        // console.log(game.hasOwnProperty("lineups") && game.lineups.hasOwnProperty("awayPlayers"));
+        // console.log(game.hasOwnProperty("lineups") && game.lineups.hasOwnProperty("homePlayers"));
+        // console.log(game.lineups.length);
+
+        // if(game.lineups.awayPlayers !== undefined){
+        if(game.hasOwnProperty("lineups") && game.lineups.hasOwnProperty("awayPlayers")){
             var awayCounter =  0;
             lineupsWeHave.push(game.teams.away.team.name);
+
+            // console.log(game.teams.away.team.name);
 
             game.lineups.awayPlayers.forEach(player => {
                 // //console.log(player.fullName);
@@ -717,9 +741,12 @@ function getLineups(){
             })
         }
 
-        if(game.lineups.homePlayers !== undefined){
+        // if(game.lineups.homePlayers !== undefined){
+        if(game.hasOwnProperty("lineups") && game.lineups.hasOwnProperty("homePlayers")){
             var homeCounter = 0;
             lineupsWeHave.push(game.teams.home.team.name);
+
+            // console.log(game.teams.home.team.name);
 
             game.lineups.homePlayers.forEach(player => {
                 // //console.log(player.fullName);
@@ -773,6 +800,18 @@ function getLineups(){
 
     })
     .then(() => {compareLineups();})
+
+    .then(() => {
+        // const interval = setInterval(function() {
+        //     // method to be executed;
+        //     this.getLineups();
+        //   }, 5000);
+
+        //  clearInterval(interval);
+    })
+
+
+
 }
 
 // function paste() {

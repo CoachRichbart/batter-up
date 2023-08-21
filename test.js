@@ -36,7 +36,7 @@ window.onload = function() {
     .then(res => res.json())
   .then(data => {
     obj = data;
-    console.log(data);
+    // console.log(data);
 
    })
   .then(() => {
@@ -198,8 +198,12 @@ window.onload = function() {
                                 <li><input type="text" name="${teamName.replace(/\s+/g, '').replace('.','')}Guess${gameNum}" placeholder="7th"></li>
                                 <li><input type="text" name="${teamName.replace(/\s+/g, '').replace('.','')}Guess${gameNum}" placeholder="8th"></li>
                                 <li><input type="text" name="${teamName.replace(/\s+/g, '').replace('.','')}Guess${gameNum}" placeholder="9th"></li>
+
                             </ul>
+                            <textarea id="txtArea" name="${teamName.replace(/\s+/g, '').replace('.','')}Paste${gameNum}" placeholder="copy/paste lineup as vertical column from spreadsheet" rows="3" cols="20" align = 'center' ></textarea>
+                            <button id="${teamName.replace(/\s+/g, '').replace('.','')}Paste${gameNum}" onclick="paste(this.id)">Use Pasted Lineup</button></br>
                         </div>
+
                         <div class="column">
                             <h3 class="center">Actual</h3>
                             <ul id="${teamName.replace(/\s+/g, '').replace('.','')}Actual${gameNum}" class="order-list">
@@ -214,6 +218,7 @@ window.onload = function() {
                                 <li><input type="text" name="${teamName.replace(/\s+/g, '').replace('.','')}Actual${gameNum}" placeholder="9th" readonly="true"></li>
                             </ul>
                         </div>
+
                     </div>
                 `;
 
@@ -400,7 +405,7 @@ function compareLineups() {
 function updateTheColors(allTheDiffs, teamsContainer, teamName, actualList){
 
 
-
+    // if(actualList.length != 9){return;}
      //console.log('in update colors');
 
      //console.log(allTheDiffs);
@@ -758,9 +763,9 @@ function getLineups(){
                 gameNum = 2;
             }
 
-            console.log(teamName);
-            console.log(`#${teamName.replace(/\s+/g, '').replace('.','')}` + gameNum);
-            console.log(document.querySelector(`#${teamName.replace(/\s+/g, '').replace('.','')}` + gameNum));
+            // console.log(teamName);
+            // console.log(`#${teamName.replace(/\s+/g, '').replace('.','')}` + gameNum);
+            // console.log(document.querySelector(`#${teamName.replace(/\s+/g, '').replace('.','')}` + gameNum));
             document.querySelector(`#${teamName.replace(/\s+/g, '').replace('.','')}` + gameNum).style.backgroundColor = 'gray';
             alreadyAdded.push(teamName);
         });
@@ -768,4 +773,49 @@ function getLineups(){
 
     })
     .then(() => {compareLineups();})
+}
+
+// function paste() {
+    // var awayElements = document.querySelectorAll("textarea[name=copy]");
+    // var x = awayElements[0].value;
+    // console.log(x);
+    // var rows = x.split("\n");
+    // console.log(rows);
+
+
+    // rows.forEach(row => {
+    //     console.log(row);
+    // })
+// }
+
+
+function paste(clicked_id){
+
+
+
+
+    var pastedData = document.querySelector("textarea[name=" + clicked_id + "]");
+    var splitPastedData = (pastedData.value.split("\n"));
+
+    var pastedDataName = clicked_id.replace('Paste', 'Guess');
+
+    var fdInputs = document.querySelectorAll("input[name=" + pastedDataName + "]");
+
+    var batterCount = 0
+
+    splitPastedData.forEach(batter => {
+
+        if(batterCount > 8){return;}
+        fdInputs[batterCount].value = batter;
+
+
+
+        batterCount += 1;
+        pastedData.value = ''
+
+    })
+
+
+
+
 }

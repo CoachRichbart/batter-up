@@ -43,6 +43,28 @@
             top: 50%;
             left: 5%;
             transform: translateX(-50%);
+            background-color: #403f3e;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+        #hideButton {
+            position: fixed;
+            top: 75%;
+            left: 5%;
+            transform: translateX(-50%);
+            background-color: red;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+        #showButton {
+            position: fixed;
+            top: 70%;
+            left: 5%;
+            transform: translateX(-50%);
             background-color: #4CAF50;
             color: white;
             padding: 10px 20px;
@@ -70,6 +92,12 @@
 <body>
     <!-- <button id="compareButton" onclick="compareLineups()">Update All Lineups</button> -->
     <button id="compareButton" onclick="getLineups()">Update All Lineups</button></br>
+    <!-- <button id="compareButton" onclick="testParams()">Update All Lineups</button></br> -->
+
+
+    <button id="hideButton" onclick="hideUpdatedLineups()">Hide Updated</button></br>
+    <button id="showButton" onclick="showUpdatedLineups()">Show Updated</button></br>
+
     <h3 id="key">
         <font color="green">Green = 3</br></font>
         <font color="lightblue">Blue = 2</br></font>

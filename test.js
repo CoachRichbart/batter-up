@@ -4770,11 +4770,23 @@
   }
   */
 
+var pizza = false;
 
 window.onload = function() {
-    // const queryString = window.location.search;
-    // const urlParams = new URLSearchParams(queryString);
-    // const team = urlParams.get('team')
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const team = urlParams.get('team');
+
+    // console.log(team);
+    var lineupDiv = document.querySelector('#pizza');
+    lineupDiv.style.display = "none";
+
+    if(team == 'pizza'){
+      pizza = true;
+      var lineupDiv = document.querySelector('#pizza');
+
+      lineupDiv.style.display = "block";
+    }
 
     // document.getElementsByClassName("pagetitle")[0].innerHTML = team;
 
@@ -5420,12 +5432,17 @@ function lastNameOnly(name){
 
 
 var lineupsWeHave = [];
+var lineupsWeHad= [];
 
 
 
-
+var howManyTimes = 0;
 function getLineups(){
     console.log('getting lineups');
+    // console.log(pizza);
+
+    lineupsWeHad = lineupsWeHave;
+
     lineupsWeHave = [];
     // console.log('pizza');
     // console.log(alreadyAdded.length);
@@ -5600,6 +5617,19 @@ function getLineups(){
 
 
     })
+    .then(() => {
+      // console.log('whut');
+      // console.log(lineupsWeHave);
+      // console.log(lineupsWeHad);
+      console.log(howManyTimes);
+
+      if(howManyTimes != 0 && pizza == true){
+        // console.log(getAbsentValues(lineupsWeHave, lineupsWeHad));
+        getAbsentValues(lineupsWeHave, lineupsWeHad);
+      }
+      howManyTimes += 1;
+
+    })
     .then(() => {compareLineups();})
 
     // .then(() => {
@@ -5632,6 +5662,39 @@ function getLineups(){
     //     console.log(row);
     // })
 // }
+
+// const getAbsentValues = (arr1, arr2) => {
+//   console.log('here');
+//   // console.log(arr1);
+//   // console.log(arr2);
+//   let res = [];
+//   res = arr1.filter(el => {
+//      return !arr2.find(obj => {
+//         return el == obj.identifier;
+//      });
+//   });
+//   // console.log(res);
+//   return res;
+// };
+
+
+function getAbsentValues(ar1, ar2) {
+  var elmts = ar1.filter(
+      function(i) {
+          return this.indexOf(i) < 0;
+      },
+      ar2
+  );
+
+  console.log(elmts);
+
+  elmts.forEach(element => {
+      console.log('trying to send notification for ' + element);
+      this.showMessage(element + ' Lineup just dropped!');
+  });
+
+}
+
 
 
 function paste(clicked_id){
@@ -5738,13 +5801,13 @@ function showUpdatedLineups() {
 }
 
 
-function myFunction() {
-    console.log("Hello World!");
-}
+// function myFunction() {
+//     console.log("Hello World!");
+// }
 
 function startTimer(){
-    // setInterval(getLineups, 5000);
-    this.showMessage('Pizza');
+    setInterval(getLineups, 5000);
+    // this.showMessage('Pizza');
 }
 
 function showMessage(message) {

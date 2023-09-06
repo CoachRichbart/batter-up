@@ -5425,6 +5425,7 @@ var lineupsWeHave = [];
 
 
 function getLineups(){
+    console.log('getting lineups');
     lineupsWeHave = [];
     // console.log('pizza');
     // console.log(alreadyAdded.length);
@@ -5735,3 +5736,38 @@ function showUpdatedLineups() {
         alreadyAdded.push(teamName);
     });
 }
+
+
+function myFunction() {
+    console.log("Hello World!");
+}
+
+function startTimer(){
+    // setInterval(getLineups, 5000);
+    this.showMessage('Pizza');
+}
+
+function showMessage(message) {
+    console.log('show messgae');
+    if (!("Notification" in window)) {
+        console.log('a');
+      // Code to run if notifications are not
+      // supported by the visitor's browser
+    } else {
+      if (Notification.permission === "granted") {
+        console.log('B');
+        var notification = new Notification(message);
+      } else if (Notification.permission !== "denied") {
+        console.log('C');
+        console.log(Notification.permission);
+        Notification.requestPermission().then(function (permission) {
+          if (permission === "granted") {
+            console.log('d');
+            var notification = new Notification(message);
+          }
+    });
+      }
+    }
+  }
+
+  // showMessage("This is an important message.");

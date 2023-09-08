@@ -5326,6 +5326,11 @@ function getThreeBattersAhead(fdLineup, actualLineup, batter){
     var fdAllThreeAhead = [fdLineup[fdOnePositionAhead], fdLineup[fdTwoPositionsAhead], fdLineup[fdThreePositionsAhead]];
     var actualAllThreeAhead = [actualLineup[actualOnePositionAhead], actualLineup[actualTwoPositionsAhead], actualLineup[actualThreePositionsAhead]];
 
+    // if(batter == 'Isaac Paredes'){
+    //   console.log('Isaac Paredes');
+    //   console.log(actualAllThreeAhead);
+    //   console.log(fdAllThreeAhead);
+    // }
 
     // console.log(actualAllThreeAhead);
     // console.log(fdAllThreeAhead);
@@ -5334,6 +5339,15 @@ function getThreeBattersAhead(fdLineup, actualLineup, batter){
 
         // if(!fdAllThreeAhead.includes(actual)){
         //     threeAheadDiffs.push(actual);
+        // }
+
+
+        // if(batter == 'Isaac Paredes'){
+        //   console.log('Isaac Paredes');
+        //   console.log(fdAllThreeAhead);
+        //   console.log(actual);
+        //   console.log(findBatterInLineup(fdAllThreeAhead, actual));
+        //   // console.log(fdAllThreeAhead);
         // }
 
         if(findBatterInLineup(fdAllThreeAhead, actual) < 0  && findBatterInLineup(fdLineup, actual) >= 0){
@@ -5380,6 +5394,16 @@ function batterAhead(batterPosition){
 
 
 function findBatterInLineup(lineup, batter){
+  // if(batter = 'Brandon Lowe'){
+  //   console.log('8888888888');
+  //   console.log(batter);
+  //   console.log(lineup);
+  // }
+  // if(batter = 'Josh Lowe'){
+  //   console.log('8888888888');
+  //   console.log(batter);
+  //   console.log(lineup);
+  // }
     let lowercaseLineup = lineup.map((x) => x.toLowerCase());
     let lowercaseBatter = batter.toLowerCase();
 
@@ -5399,7 +5423,8 @@ function findBatterInLineup(lineup, batter){
 
     // if(lastNameOnly(lowercaseBatter) == ''){return -1;}
 
-    let fuzzy = lastName.indexOf(lastNameOnly(lowercaseBatter));
+    // let fuzzy = lastName.indexOf(lastNameOnly(lowercaseBatter));
+    let fuzzy = lastName.indexOf(lowercaseBatter);
 
     if(lastNameOnly(lowercaseBatter) != '' && fuzzy >= 0){
         // console.log('fuzzy');
@@ -5826,7 +5851,16 @@ function showMessage(message) {
         Notification.requestPermission().then(function (permission) {
           if (permission === "granted") {
             console.log('d');
-            var notification = new Notification(message);
+            const options = {
+              body: message,
+              // icon: "/images/jason-leung-HM6TMmevbZQ-unsplash.jpg",
+              vibrate: [200, 100, 200],
+              tag: "new-lineup",
+              // image: img,
+              // badge: "https://spyna.it/icons/android-icon-192x192.png",
+              actions: [{ action: "Detail", title: "View", icon: "https://via.placeholder.com/128/ff0000" }]
+            };
+            var notification = new Notification('NEW LINEUP', options);
           }
     });
       }
